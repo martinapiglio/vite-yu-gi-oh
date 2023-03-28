@@ -15,7 +15,7 @@ export default {
     },
 
     created() {
-        axios.get('https://db.ygoprodeck.com/api/v7/cardinfo.php?num=9&offset=0').then((res)=>{
+        axios.get('https://db.ygoprodeck.com/api/v7/cardinfo.php?num=50&offset=0').then((res)=>{
             console.log(res.data.data)
             this.store.cards = res.data.data;
         });
@@ -27,9 +27,13 @@ export default {
 <template>
     <main>
         <h1>Yu-Gi-Oh! Cards</h1>
-        <div class="cards-container">
+        <div v-if="store.cards.length == 50" class="cards-container">
             <AppCard v-for="card in store.cards" :img="card.card_images[0].image_url" :title="card.name" :type="card.archetype">
             </AppCard>
+        </div>
+
+        <div v-else class="loading">
+            Cards loading...
         </div>
     </main>
 </template>
@@ -43,6 +47,13 @@ export default {
         background-attachment: fixed;
 
         color: white;
+        height: 100vh;
+        overflow-y: scroll;
+        
+        .loading {
+            text-align: center;
+            font-size: larger;
+        }
 
         h1 {
             padding: 2rem 0;
