@@ -38,7 +38,11 @@ export default {
                 this.store.cards = res.data.data;
                 this.store.cardName = '';
                 this.store.generatedCardNum = this.store.cards.length;
-            });
+            }).catch((error) => {
+                    console.log(error);
+                    this.store.cardName = '';
+                    alert("No card has been found, please try again with another one!");
+                });
             
         }
     }
@@ -54,13 +58,13 @@ export default {
 
         <AppGenerator></AppGenerator>
 
-        <div class="cards-container">            
+        <div v-if="store.cards.length> 0" class="cards-container">            
             <AppCard v-for="card in store.cards" :img="card.card_images[0].image_url" :title="card.name" :type="card.archetype"></AppCard>
         </div>
 
-        <!-- <div v-else class="loading">
+        <div v-else class="loading">
             Cards loading...
-        </div> -->
+        </div> 
     </main>
 </template>
 
