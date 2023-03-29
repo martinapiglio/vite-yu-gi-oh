@@ -3,6 +3,7 @@ import {store} from "../store.js";
 import axios from "axios";
 import AppCard from "../components/AppCard.vue";
 import AppSearchBar from './AppSearchBar.vue'
+import AppGenerator from './AppGenerator.vue';
 
 export default {
     data() {
@@ -13,7 +14,8 @@ export default {
     
     components: {
         AppCard,
-        AppSearchBar
+        AppSearchBar,
+        AppGenerator
     },
 
     created() {
@@ -21,6 +23,7 @@ export default {
         axios.get(this.store.APIcall).then((res)=>{
             console.log(res.data.data)
             this.store.cards = res.data.data;
+            this.store.generatedCardNum = this.store.cards.length;
         });
     },
 
@@ -33,12 +36,13 @@ export default {
             axios.get(apiNewString).then((res) => {
                 console.log(res.data.data);
                 this.store.cards = res.data.data;
+                this.store.cardName = '';
+                this.store.generatedCardNum = this.store.cards.length;
             });
             
         }
     }
 }
-
 
 </script>
 
@@ -47,6 +51,8 @@ export default {
         <h1>Yu-Gi-Oh! Cards</h1>
 
         <AppSearchBar @searchCardName="fetchCard()"></AppSearchBar>
+
+        <AppGenerator></AppGenerator>
 
         <div class="cards-container">            
             <AppCard v-for="card in store.cards" :img="card.card_images[0].image_url" :title="card.name" :type="card.archetype"></AppCard>
