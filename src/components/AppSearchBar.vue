@@ -26,6 +26,22 @@ export default {
 
     .container {
         @include containerCenter();
+
+        input {
+            min-width: 250px;
+            margin-right: .3rem;
+            padding: .2rem;
+            border: none;
+            border-radius: 3px;
+        }
+
+        button {
+            padding: .2rem;
+            border: none;
+            border-radius: 3px;
+            background-color: #e3b081;
+
+        }
     }
 
 </style>

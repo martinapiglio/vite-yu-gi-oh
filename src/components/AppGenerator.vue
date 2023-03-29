@@ -14,7 +14,7 @@ export default {
 <template>
 
     <div class="container">
-        <div>Generated cards: {{ this.store.generatedCardNum }}</div>
+        <div id="text">Generated cards: {{ this.store.generatedCardNum }}</div>
     </div>
     
 </template>
@@ -25,6 +25,11 @@ export default {
 
     .container {
         @include containerCenter();
+
+        #text {
+            padding: 1rem 0;
+            font-size: 14px;
+        }
     }
 
 </style>
