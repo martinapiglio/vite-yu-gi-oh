@@ -2,6 +2,7 @@
 import {store} from "../store.js";
 import axios from "axios";
 import AppCard from "../components/AppCard.vue";
+import AppSearchBar from './AppSearchBar.vue'
 
 export default {
     data() {
@@ -12,33 +13,54 @@ export default {
     
     components: {
         AppCard,
+        AppSearchBar
     },
 
     created() {
-        axios.get('https://db.ygoprodeck.com/api/v7/cardinfo.php?num=50&offset=0').then((res)=>{
+        
+        axios.get(this.store.APIcall).then((res)=>{
             console.log(res.data.data)
             this.store.cards = res.data.data;
         });
+    },
+
+    methods: {
+        fetchCard() {
+
+            let apiNewString = this.store.APIcall + '&fname=' + this.store.cardName;
+
+            console.log(apiNewString);
+            axios.get(apiNewString).then((res) => {
+                console.log(res.data.data);
+                this.store.cards = res.data.data;
+            });
+            
+        }
     }
 }
+
 
 </script>
 
 <template>
     <main>
         <h1>Yu-Gi-Oh! Cards</h1>
-        <div v-if="store.cards.length == 50" class="cards-container">
-            <AppCard v-for="card in store.cards" :img="card.card_images[0].image_url" :title="card.name" :type="card.archetype">
-            </AppCard>
+
+        <AppSearchBar @searchCardName="fetchCard()"></AppSearchBar>
+
+        <div class="cards-container">            
+            <AppCard v-for="card in store.cards" :img="card.card_images[0].image_url" :title="card.name" :type="card.archetype"></AppCard>
         </div>
 
-        <div v-else class="loading">
+        <!-- <div v-else class="loading">
             Cards loading...
-        </div>
+        </div> -->
     </main>
 </template>
 
 <style scoped lang="scss">
+
+    @use './style/mixins.scss' as *;
 
     main {
 
@@ -61,8 +83,7 @@ export default {
         }
 
         .cards-container {
-            max-width: 900px;
-            margin: auto;
+            @include containerCenter();
     
             display: flex;
             flex-flow: row wrap;
