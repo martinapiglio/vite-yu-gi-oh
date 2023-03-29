@@ -30,9 +30,24 @@ export default {
     methods: {
         fetchCard() {
 
-            let apiNewString = this.store.APIcall + '&fname=' + this.store.cardName;
+            let apiNewString = this.store.APIcall;  
+
+            if (this.store.cardName!= '' && this.store.cardType!= '') {
+                
+                apiNewString = this.store.APIcall + '&fname=' + this.store.cardName + '&type=' + this.store.cardType;
+            
+            } else if(this.store.cardName!= '' && this.store.cardType == ''){
+                
+                apiNewString = this.store.APIcall + '&fname=' + this.store.cardName;
+            
+            } else if(this.store.cardName == '' && this.store.cardType!= ''){
+                
+                apiNewString = this.store.APIcall + '&type=' + this.store.cardType;
+
+            }
 
             console.log(apiNewString);
+
             axios.get(apiNewString).then((res) => {
                 console.log(res.data.data);
                 this.store.cards = res.data.data;
